@@ -11,7 +11,7 @@ if __name__ == "__main__":
     resolution = 1
     min_expected = 1.0
 
-    SFR = 1.0e-3  # Msun/yr
+    SFR = 1.0e3  # Msun/yr
     delta_t = 10e6  # yr
     total_mass = SFR * delta_t
     M_min = 5
@@ -34,7 +34,7 @@ if __name__ == "__main__":
     #opt_heights = [b[2] / w for b, w in zip(opt_bins, opt_widths)]
 
     # Hybrid sampler
-    hybrid_sampler = HybridSampler(mf, resolution=resolution, min_expected=min_expected)
+    hybrid_sampler = HybridSampler(mf, resolution=resolution, transition_N=10, hist_bins=100)
     hybrid_bins = hybrid_sampler.sample()
     hybrid_widths = [b[1] - b[0] for b in hybrid_bins]
     hybrid_mids = [(b[0] + b[1]) / 2 for b in hybrid_bins]
