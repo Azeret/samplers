@@ -107,5 +107,5 @@ class HybridSampler:
                 print(f"[4.{i}] HIST bin (log): {np.log10(m1):.3f} – {np.log10(m2):.3f}, N = {N:.3f}, log<M> = {logMavg_in_bin:.3f}")
                 self.integrated_bins.append((m1, m2, N, M_in_bin))
 
-        # Return all bins: optimal first, then histogram bins
-        return self.optimal_bins[::-1] + self.integrated_bins
+        # Return all bins: optimal second, histogram bins first (so that mass arr is sorted)
+        return self.integrated_bins + self.optimal_bins[::-1]
