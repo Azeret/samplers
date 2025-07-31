@@ -86,8 +86,10 @@ class HybridSampler:
 
             m_low = max(m_low, M_min)
             N = self.mf.integral_number(m_low, m_high)
-            print(f"[3.2] OPT bin: {m_low:.2e} – {m_high:.2e}, ΔM = {m_high - m_low:.2e}, N = {N:.3f}")
-            self.optimal_bins.append((m_low, m_high, N))
+            M_in_bin = self.mf.integral_mass(m_low, m_high)
+            logM_in_bin = np.log10(M_in_bin)                        
+            print(f"[3.2] OPT bin: {m_low:.2e} – {m_high:.2e}, ΔM = {m_high - m_low:.2e}, N = {N:.3f},  logM = {logM_in_bin:.3f}")
+            self.optimal_bins.append((m_low, m_high, N,M_in_bin))
             m_high = m_low  # move to next bin down
 
         # === HISTOGRAMMING (low-mass, dense regime) ===
@@ -99,8 +101,11 @@ class HybridSampler:
             for i in range(len(m_edges) - 1):
                 m1, m2 = m_edges[i], m_edges[i + 1]
                 N = self.mf.integral_number(m1, m2)
-                print(f"[4.{i}] HIST bin: {m1:.2e} – {m2:.2e}, N = {N:.3f}")
-                self.integrated_bins.append((m1, m2, N))
+                M_in_bin = self.mf.integral_mass(m1, m2)
+                logM_in_bin = np.log10(M_in_bin)   
+                logMavg_in_bin= np.log10(M_in_bin/N)
+                print(f"[4.{i}] HIST bin (log): {np.log10(m1):.3f} – {np.log10(m2):.3f}, N = {N:.3f}, log<M> = {logMavg_in_bin:.3f}")
+                self.integrated_bins.append((m1, m2, N, M_in_bin))
 
         # Return all bins: optimal first, then histogram bins
         return self.optimal_bins[::-1] + self.integrated_bins
