@@ -11,17 +11,25 @@ if __name__ == "__main__":
     resolution = 1
     min_expected = 1.0
 
-    SFR = 1.0e3  # Msun/yr
-    delta_t = 10e6  # yr
+
+    SFR = 1.0e-1  # Msun/yr
+    SFR = 1.0e1  # Msun/yr    
+    delta_t = 60*10e6  # yr
     total_mass = SFR * delta_t
-    M_min = 5
+    M_min_theory = 5
+    M_min_sampled=10**3.5
     M_max_theory = 1e9
     M_max_sampled = M_max_ecl(SFR)
-
+    #print([max(int((M_max_ecl(SFR)/M_min_sampled)/5),10) for SFR in [1e-3,1e-2,1e-1,1,10,100,1000,3000]])
+    hist_bins=max(int((M_max_sampled/M_min_sampled)/5),10)
+    
+    #print(np.log10(M_max_sampled), np.log10(total_mass))
+    #exit()
     mf = MassFunction(
         alpha=alpha,
         total_mass=total_mass,
-        M_min=M_min,
+        M_min_theory=M_min_theory,
+        M_min_sampled=M_min_sampled,
         M_max_sampled=M_max_sampled,
         M_max_theory=M_max_theory
     )
@@ -34,14 +42,15 @@ if __name__ == "__main__":
     #opt_heights = [b[2] / w for b, w in zip(opt_bins, opt_widths)]
 
     # Hybrid sampler
-    hybrid_sampler = HybridSampler(mf, resolution=resolution, transition_N=10, hist_bins=100)
+    hybrid_sampler = HybridSampler(mf, resolution=resolution, transition_N=10, hist_bins=hist_bins)
     hybrid_bins = hybrid_sampler.sample()
     hybrid_widths = [b[1] - b[0] for b in hybrid_bins]
     hybrid_mids = [(b[0] + b[1]) / 2 for b in hybrid_bins]
     hybrid_heights = [b[2] / w for b, w in zip(hybrid_bins, hybrid_widths)]
-
+    mass_in_bins = [b[3] for b in hybrid_bins]
+    
     # Reference
-    m_vals = np.logspace(np.log10(M_min), np.log10(M_max_sampled), 300)
+    m_vals = np.logspace(np.log10(M_min_theory), np.log10(M_max_sampled), 300)
     ref = mf.dndm(m_vals)
 
     # Plot
