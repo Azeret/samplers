@@ -1,30 +1,6 @@
-"""Mass function utilities.
-
-This module defines :class:`MassFunction`, a helper class that evaluates and
-inverts power-law mass functions.  The implementation supports both a single
-power-law slope and an arbitrary number of power-law segments separated by
-break masses.  All calculations are analytic and follow the notation used in
-the reference GalIMF scripts.
-
-The main quantities are
-
-``dN/dm = k_i * m^{-alpha_i}``
-
-within each segment ``i`` bounded by ``m_low[i]`` and ``m_high[i]``.  The
-normalisation constants ``k_i`` are chosen such that the distribution is
-continuous at the break masses and integrates to ``total_mass`` over the full
-theoretical range ``[M_min, M_max_theory]``.
-"""
-
-from __future__ import annotations
-
-from dataclasses import dataclass
-from typing import Iterable, List
-
 import numpy as np
 
 
-@dataclass
 class MassFunction:
     def __init__(self, alpha, total_mass, M_min, M_max_theory, M_max_sampled):
         self.alpha = float(alpha)
@@ -36,14 +12,10 @@ class MassFunction:
 
     @property
     def bounds_theory(self):
-        """Return ``(M_min, M_max_theory)``."""
-
         return (self.M_min, self.M_max_theory)
 
     @property
     def bounds_sampled(self):
-        """Return ``(M_min, M_max_sampled)``."""
-
         return (self.M_min, self.M_max_sampled)
 
     def normalization_constant(self):

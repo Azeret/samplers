@@ -1,0 +1,38 @@
+__pycache__/
+*.pyc
+# VS Code
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Python cache / virtualenv
+__pycache__/
+*.py[cod]
+*.pyo
+*.so
+.venv/
+env/
+
+# Jupyter junk
+.ipynb_checkpoints/
+*.ipynb~
+*.ipynb_checkpoints
+
+# Logs / temp / OS files
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+
+# Generated outputs
+plots/
+figures/
+outputs/
+data/*.csv
+data/*.tsv
+*.png
+*.pdf
+*.fits
+>>>>>>> dd83692 (chore: add .gitignore and clean tracked junk)
+__pycache__/
+*.pyc
