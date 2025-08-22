@@ -34,10 +34,15 @@ if __name__ == "__main__":
         M_max_theory=M_max_theory,
     )
 
-    # Hybrid sampler: optimal sampling at the high-mass end, histogram below
-    hybrid_sampler = HybridSampler(
-        mf, resolution=resolution, transition_N=10, hist_bins=100
-    )
+    # Optimal sampler
+    #opt_sampler = OptimalSampler(mf, resolution=resolution)
+    #opt_bins = opt_sampler.sample()
+    #opt_widths = [b[1] - b[0] for b in opt_bins]
+    #opt_mids = [(b[0] + b[1]) / 2 for b in opt_bins]
+    #opt_heights = [b[2] / w for b, w in zip(opt_bins, opt_widths)]
+
+    # Hybrid sampler
+    hybrid_sampler = HybridSampler(mf, resolution=resolution, transition_N=5, hist_bins=300)
     hybrid_bins = hybrid_sampler.sample()
     hybrid_widths = [b[1] - b[0] for b in hybrid_bins]
     hybrid_mids = [(b[0] + b[1]) / 2 for b in hybrid_bins]
