@@ -34,3 +34,5 @@ data/*.tsv
 *.pdf
 *.fits
 >>>>>>> dd83692 (chore: add .gitignore and clean tracked junk)
+__pycache__/
+*.pyc
